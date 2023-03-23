@@ -8,9 +8,10 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import eg.iti.sv.weather.fav.view.FavFragment
 
 
 class HomeActivity : AppCompatActivity(){
@@ -29,15 +30,21 @@ class HomeActivity : AppCompatActivity(){
         navigationView = findViewById(R.id.navigator)
         toolbar = findViewById(R.id.toolBar)
 
+
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         actionBar?.setHomeAsUpIndicator(R.drawable.menu_icon)
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
+
         navController = findNavController(this, R.id.nav_host_fragment)
-
-
         setupWithNavController(navigationView, navController)
+
+        val appBarConfiguration = AppBarConfiguration(navController.graph,drawerLayout)
+        findViewById<Toolbar>(R.id.toolBar)
+            .setupWithNavController(navController, appBarConfiguration)
+        findViewById<NavigationView>(R.id.navigator)
+            .setupWithNavController(navController)
 
     }
 
