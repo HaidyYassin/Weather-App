@@ -18,5 +18,15 @@ class AlertsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_alerts, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val size = 0
+         val myView: View = view.findViewById(R.id.animation_view_alert)
+        if(size == 0){
+            myView.visibility = View.VISIBLE
+        }else
+            myView.visibility = View.INVISIBLE
+    }
+
 
 }

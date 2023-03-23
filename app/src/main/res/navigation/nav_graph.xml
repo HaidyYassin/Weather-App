@@ -7,21 +7,21 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="eg.iti.sv.weather.home.view.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/alertsFragment"
         android:name="eg.iti.sv.weather.alerts.view.AlertsFragment"
-        android:label="fragment_alerts"
+        android:label="@string/alert"
         tools:layout="@layout/fragment_alerts" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="eg.iti.sv.weather.settings.view.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/favFragment"
         android:name="eg.iti.sv.weather.fav.view.FavFragment"
-        android:label="fragment_fav"
+        android:label="@string/fav"
         tools:layout="@layout/fragment_fav" />
 </navigation>

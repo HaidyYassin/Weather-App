@@ -17,4 +17,14 @@ class FavFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_fav, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val size = 0
+        val myView: View = view.findViewById(R.id.animation_view_fav)
+        if(size == 0){
+            myView.visibility = View.VISIBLE
+        }else
+            myView.visibility = View.INVISIBLE
+    }
+
 }
