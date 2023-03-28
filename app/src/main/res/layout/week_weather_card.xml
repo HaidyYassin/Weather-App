@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     app:cardBackgroundColor="@color/secondary"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp">
@@ -28,7 +29,7 @@
             android:id="@+id/week_icon_txt"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@+id/week_day_txt"
             app:srcCompat="@drawable/weather"
             tools:layout_editor_absoluteY="-5dp" />
@@ -37,7 +38,7 @@
             android:id="@+id/week_temp_desc_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/aladin"
             android:text="@string/mostlyclear"
             android:textColor="@color/white"
@@ -49,11 +50,12 @@
             android:id="@+id/week_temp_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/aladin"
             android:text="@string/number"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/week_temp_desc_txt"
             app:layout_constraintTop_toTopOf="@+id/week_temp_desc_txt" />
     </androidx.constraintlayout.widget.ConstraintLayout>

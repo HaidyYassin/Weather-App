@@ -12,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import eg.iti.sv.weather.home.view.CurrentLocation
 
 
 class HomeActivity : AppCompatActivity(){
@@ -45,6 +46,8 @@ class HomeActivity : AppCompatActivity(){
             .setupWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.navigator)
             .setupWithNavController(navController)
+
+
 
     }
 
