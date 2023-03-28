@@ -29,6 +29,9 @@
     <string name="date">12Mar, 7:33Pm</string>
     <string name="time">7:33Pm</string>
     <string name="saturday">Saturday</string>
+    <string name="map_api" >AIzaSyALEzKGnX8Gta5jX2RArUMQgtcMtd4cYEs</string>
+    <string name="search">Search</string>
+
 
 
 </resources>

@@ -23,5 +23,14 @@
         android:id="@+id/favFragment"
         android:name="eg.iti.sv.weather.fav.view.FavFragment"
         android:label="@string/fav"
-        tools:layout="@layout/fragment_fav" />
+        tools:layout="@layout/fragment_fav" >
+        <action
+            android:id="@+id/action_favFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="eg.iti.sv.weather.fav.view.MapFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_map" />
 </navigation>
