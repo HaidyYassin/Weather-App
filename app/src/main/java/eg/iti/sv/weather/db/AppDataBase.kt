@@ -19,7 +19,6 @@ abstract class AppDataBase  : RoomDatabase(){
                     ctx.applicationContext, AppDataBase::class.java, "color_database")
                     .build()
                 INSTANCE = instance
-// return instance
                 instance }
         }
     }

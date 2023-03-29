@@ -1,22 +1,26 @@
 package eg.iti.sv.weather.map.view
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.DialogInterface
+import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import eg.iti.sv.weather.R
 import eg.iti.sv.weather.databinding.FragmentMapBinding
@@ -26,6 +30,8 @@ import eg.iti.sv.weather.map.viewmodel.MapViewModelFactory
 import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Repository
 import eg.iti.sv.weather.network.APIClient
+import java.io.IOException
+
 
 lateinit var viewModel: MapViewModel
 class MapFragment : Fragment() {
@@ -35,6 +41,7 @@ class MapFragment : Fragment() {
     private lateinit var viewModelFactory: MapViewModelFactory
     var place =""
     private lateinit var favPlace: FavPlace
+    private lateinit var mMap:GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +67,30 @@ class MapFragment : Fragment() {
             )
         )
 
+
+        binding.searchPlaceTxt.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                ){
+
+                    //execute our method for searching
+                    geoLocate(binding.searchPlaceTxt.text.toString())
+                }
+
+                return false;
+            }
+
+
+        })
+
+
         viewModel  = ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
 
         val supportMapFragment : SupportMapFragment = childFragmentManager.findFragmentById(R.id.mapview) as SupportMapFragment
         supportMapFragment.getMapAsync(object : OnMapReadyCallback {
             override fun onMapReady(googleMap: GoogleMap) {
+                mMap = googleMap
                 googleMap.setOnMapClickListener {
                     val marker = MarkerOptions()
                     marker.position(it)
@@ -97,6 +123,47 @@ class MapFragment : Fragment() {
         return ""
     }
 
+    private fun geoLocate(searchString: String) {
+        Log.d(TAG, "geoLocate: geolocating")
+        val geocoder = Geocoder(requireContext())
+        var list: List<Address>? = ArrayList()
+        try {
+            list = geocoder.getFromLocationName(searchString, 1)
+        } catch (e: IOException) {
+            Log.e(TAG, "geoLocate: IOException: " + e.message)
+        }
+        if (list!!.size > 0) {
+            val address: Address = list[0]
+            Log.d(TAG, "geoLocate: found a location: " + address.toString())
+
+            moveCamera(
+                LatLng(address.latitude, address.longitude), 5f,
+                address.adminArea
+            )
+        }
+    }
+
+    private fun moveCamera(latLng: LatLng, zoom: Float, title: String) {
+        Log.d(
+            TAG,
+            "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude
+        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
+        if (title != "My Location") {
+            mMap.clear()
+            val options = MarkerOptions()
+                .position(latLng)
+                .title(title)
+            mMap.addMarker(options)
+            favPlace = FavPlace(paceName = title, longitude = latLng.longitude, latitude = latLng.latitude, latLog = latLng.toString())
+            Dialog(favPlace).show(activity?.supportFragmentManager as FragmentManager,"dialog")
+        }
+        hideSoftKeyboard()
+    }
+
+    private fun hideSoftKeyboard() {
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
 
     class Dialog(private val place:FavPlace): DialogFragment() {
 
@@ -121,5 +188,9 @@ class MapFragment : Fragment() {
             } ?: throw IllegalStateException("Activity cannot be null")
         }
     }
+
 }
+
+
+
 
