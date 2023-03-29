@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="8dp"
-    tools:context=".fav.view.MapFragment"
+    tools:context=".map.view.MapFragment"
     android:orientation="vertical">
 
 

@@ -18,8 +18,14 @@ class APIClient private constructor() : RemoteSource{
         }
     }
 
-    override suspend fun getWeatherOverNetwork(): WeatherResponse {
-        val root = retrofitService.getWeather()
+    override suspend fun getWeatherOverNetwork(
+        lat: String?,
+        lon: String?,
+        exclude: String?,
+        units: String?,
+        appid: String?
+    ): WeatherResponse {
+        val root = retrofitService.getWeather(lat,lon)
         println(root.body())
         return root.body()!!
     }

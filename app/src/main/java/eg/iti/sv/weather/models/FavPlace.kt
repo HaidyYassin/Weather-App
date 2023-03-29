@@ -10,4 +10,4 @@ data class FavPlace(
     val latitude:Double,
     @PrimaryKey
     val latLog:String
-)
+):java.io.Serializable

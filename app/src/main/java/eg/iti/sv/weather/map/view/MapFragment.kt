@@ -76,7 +76,6 @@ class MapFragment : Fragment() {
                     googleMap.addMarker(marker)
                     Dialog(favPlace).show(activity?.supportFragmentManager as FragmentManager,"dialog")
 
-
                 }
             }
 
