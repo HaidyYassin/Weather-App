@@ -9,8 +9,8 @@ interface FavPlaceDao {
     @get:Query("SELECT * FROM FavPlaces")
     val allFavPlaces: Flow<List<FavPlace>>
 
-    @Query("SELECT * FROM FavPlaces WHERE id = :first")
-    fun findPlaceById(first: Int): FavPlace
+    @Query("SELECT * FROM FavPlaces WHERE latLog = :first")
+    fun findPlaceById(first: String): FavPlace
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlace(favPlace: FavPlace?)

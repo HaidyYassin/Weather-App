@@ -7,5 +7,5 @@ interface LocalSource {
     suspend fun insertPlace(favPlace: FavPlace)
     suspend fun deletePlace(favPlace: FavPlace?)
     suspend fun getAllFavPlaces() : Flow<List<FavPlace>>
-    suspend fun findPlaceById(id: Int): FavPlace
+    suspend fun findPlaceById(id: String): FavPlace
 }

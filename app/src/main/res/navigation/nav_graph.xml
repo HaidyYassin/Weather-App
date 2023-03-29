@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="eg.iti.sv.weather.fav.view.MapFragment"
+        android:name="eg.iti.sv.weather.map.view.MapFragment"
         android:label="@string/map"
         tools:layout="@layout/fragment_map" />
 </navigation>

@@ -25,7 +25,6 @@ class HomeViewModel(private val _repo: RepositoryInterface) : ViewModel(){
 
     init {
         getWeatherOverNetwork()
-
     }
 
 
