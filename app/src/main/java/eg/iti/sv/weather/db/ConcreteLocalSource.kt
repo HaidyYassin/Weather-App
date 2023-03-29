@@ -23,7 +23,7 @@ class ConcreteLocalSource(context: Context):LocalSource {
         return favPlaceDao.allFavPlaces
     }
 
-    override suspend fun findPlaceById(id: Int): FavPlace {
+    override suspend fun findPlaceById(id: String): FavPlace {
        return favPlaceDao.findPlaceById(id)
     }
 }

@@ -5,11 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "FavPlaces")
 data class FavPlace(
-
     val paceName:String,
     val longitude:Double,
-    val latitude:Double
-    ){
-    @PrimaryKey(autoGenerate = true)
-    val id:Int=0
-}
+    val latitude:Double,
+    @PrimaryKey
+    val latLog:String
+)

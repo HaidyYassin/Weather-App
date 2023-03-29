@@ -48,7 +48,6 @@ class HomeActivity : AppCompatActivity(){
             .setupWithNavController(navController)
 
 
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

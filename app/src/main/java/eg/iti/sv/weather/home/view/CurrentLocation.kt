@@ -14,6 +14,11 @@ import com.google.android.gms.location.*
 class CurrentLocation(var activity:Activity,var context: Context) {
     private val REQUEST_CODE = 5
     var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+     var longitude:Double =0.0
+     var latitude:Double =0.0
+    var myaddress =" "
+
+
 
     private fun checkPermissions():Boolean{
         return ActivityCompat.checkSelfPermission(
@@ -48,6 +53,7 @@ class CurrentLocation(var activity:Activity,var context: Context) {
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         mLocationRequest.interval =0
 
+
         mFusedLocationClient.requestLocationUpdates(
             mLocationRequest,mLocationCallback, Looper.myLooper()
         )
@@ -57,18 +63,20 @@ class CurrentLocation(var activity:Activity,var context: Context) {
     private val mLocationCallback: LocationCallback = object : LocationCallback(){
         @SuppressLint("SuspiciousIndentation")
         override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation : Location? = locationResult.lastLocation
-            val longitude =mLastLocation?.longitude
-            val altitude =mLastLocation?.altitude
+            super.onLocationResult(locationResult)
+            val mLastLocation = locationResult.lastLocation
+            longitude =mLastLocation?.longitude as Double
+            latitude =mLastLocation?.latitude as Double
             val geocoder = Geocoder(context)
             println("--------------------------")
-            println(longitude.toString()+"  "+altitude.toString())
+            println(longitude.toString()+"  "+latitude.toString())
 
-            val theAddress = geocoder.getFromLocation(altitude as Double, longitude as Double,5)
+            val theAddress = geocoder.getFromLocation(latitude as Double, longitude as Double,5)
             if(theAddress?.size!! > 0)
             {
                 println("--------------------------")
                 println(theAddress?.get(0)?.countryName +theAddress?.get(0)?.subAdminArea +theAddress?.get(0)?.adminArea)
+                myaddress =theAddress?.get(0)?.subAdminArea.toString()
             }}
     }
 

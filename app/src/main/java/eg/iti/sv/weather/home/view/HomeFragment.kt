@@ -37,6 +37,7 @@ class HomeFragment : Fragment() {
     private lateinit var hourlyAdapter: HourWeatherAdapter
     private lateinit var weeklyAdapter: WeekWeatherAdapter
     private lateinit var geocoder:Geocoder
+    private lateinit var currentLocation: CurrentLocation
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
@@ -44,15 +45,21 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-       binding = FragmentHomeBinding.inflate(inflater,container,false)
-        geocoder = Geocoder(activity?.applicationContext as Context)
+        binding = FragmentHomeBinding.inflate(inflater,container,false)
+
+        currentLocation =CurrentLocation(requireActivity(),requireContext())
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentLocation.getLastLocation()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //CurrentLocation(requireActivity(),requireContext()).getLastLocation()
+
 
         viewModelFactory = HomeViewModelFactory(
             Repository.getInstance(
@@ -66,7 +73,7 @@ class HomeFragment : Fragment() {
                 when(it){
 
                     is ApiState.Success ->{
-                        //binding.cityNameTxt.text = getCityName(it.data.lat.toString(),it.data.lon.toString())
+                        binding.cityNameTxt.text = currentLocation.myaddress
                         binding.tempTxt.text = it.data.current.temp.toString()
 
                         binding.dateTxt.text =  getDateString(it.data.current.dt)
@@ -109,6 +116,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
 
     }
 
