@@ -27,10 +27,22 @@
         <action
             android:id="@+id/action_favFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_favFragment_to_favWeatherFragment"
+            app:destination="@id/favWeatherFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="eg.iti.sv.weather.map.view.MapFragment"
         android:label="@string/map"
         tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/favWeatherFragment"
+        android:name="eg.iti.sv.weather.favweather.view.FavWeatherFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_fav_weather">
+        <argument
+            android:name="currentItem"
+            app:argType="eg.iti.sv.weather.models.FavPlace" />
+    </fragment>
 </navigation>

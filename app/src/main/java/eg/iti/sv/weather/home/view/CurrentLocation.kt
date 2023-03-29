@@ -5,18 +5,19 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.location.Location
+
 import android.location.LocationManager
 import android.os.Looper
+
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
 class CurrentLocation(var activity:Activity,var context: Context) {
     private val REQUEST_CODE = 5
-    var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-     var longitude:Double =0.0
-     var latitude:Double =0.0
-    var myaddress =" "
+     var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+     private var longitude:Double =0.0
+     private var latitude:Double =0.0
+     var myaddress =" "
 
 
 
@@ -51,8 +52,8 @@ class CurrentLocation(var activity:Activity,var context: Context) {
     private fun requestNewLocationData(){
         val mLocationRequest = LocationRequest()
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        mLocationRequest.interval =0
-
+        mLocationRequest.interval =1000
+        mLocationRequest.numUpdates=1
 
         mFusedLocationClient.requestLocationUpdates(
             mLocationRequest,mLocationCallback, Looper.myLooper()
@@ -81,17 +82,18 @@ class CurrentLocation(var activity:Activity,var context: Context) {
     }
 
     @SuppressLint("MissingPermission")
-     fun getLastLocation():Unit{
+     fun getLastLocation():Pair<Double,Double>{
         if(checkPermissions()){
             if(isLocationEnabled()){
                 requestNewLocationData()
+                return Pair(longitude,latitude)
             }
             else{
                 //Toast.makeText(this,"Turn on Location", Toast.LENGTH_SHORT).show()
             }
         }else
             requestPermissions()
-
+        return Pair(0.0 , 0.0)
     }
 
 }

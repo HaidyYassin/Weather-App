@@ -26,7 +26,7 @@ class FavPlaceAdapter(private val context: Context, private var places: List<Fav
             myListener.removeFromFav(places.get(position))
         }
         holder.binding.favPlaceCardView.setOnClickListener {
-            myListener.getFavWeather()
+          myListener.getFavWeather(places.get(position),holder.binding.root)
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -64,8 +65,6 @@ class FavFragment : Fragment(),OnFavClickListener {
                 binding.favPlacesRecycler.visibility = View.INVISIBLE
         }}
 
-
-
         binding.addFavBtn.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_favFragment_to_mapFragment)
         }
@@ -75,8 +74,10 @@ class FavFragment : Fragment(),OnFavClickListener {
        viewModel.removeFromFav(favPlace)
     }
 
-    override fun getFavWeather() {
-        Toast.makeText(requireContext(),"card clicked",Toast.LENGTH_SHORT).show()
+    override fun getFavWeather(favPlace: FavPlace,view:View) {
+        val bundle = bundleOf("weather" to favPlace)
+        Navigation.findNavController(view).navigate(R.id.action_favFragment_to_favWeatherFragment,bundle)
+
     }
 
 }

@@ -25,8 +25,14 @@ class Repository private constructor(
         }
     }
 
-    override suspend fun getWeatherOverNetwork(): Flow<WeatherResponse> {
-        return flowOf( remoteSource.getWeatherOverNetwork())
+    override suspend fun getWeatherOverNetwork(
+        lat: String?,
+        lon: String?,
+        exclude: String?,
+        units: String?,
+        appid: String?
+    ): Flow<WeatherResponse> {
+        return flowOf( remoteSource.getWeatherOverNetwork(lat,lon))
     }
 
     override suspend fun removePlace(favPlace: FavPlace) {
