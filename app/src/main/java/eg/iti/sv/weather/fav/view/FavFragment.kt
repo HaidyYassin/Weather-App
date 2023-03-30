@@ -34,7 +34,6 @@ class FavFragment : Fragment(),OnFavClickListener {
     ): View? {
         binding = FragmentFavBinding.inflate(inflater,container,false)
 
-
         viewModelFactory = FavViewModelFactory(
             Repository.getInstance(
                 APIClient.getInstance(), ConcreteLocalSource(requireContext())

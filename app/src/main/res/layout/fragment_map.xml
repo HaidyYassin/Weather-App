@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="8dp"
-    tools:context=".map.view.MapFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".map.view.MapFragment">
 
 
     <EditText
@@ -14,10 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded"
+        android:elevation="6dp"
         android:ems="10"
+        android:drawableStart="@drawable/search_icon"
         android:hint="@string/search"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:padding="16dp"
+        android:textColor="@color/primary" />
 
     <fragment
         android:id="@+id/mapview"
@@ -26,4 +31,4 @@
         android:layout_height="match_parent" />
 
 
-</LinearLayout>
+</FrameLayout>
