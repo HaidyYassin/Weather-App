@@ -64,7 +64,7 @@ class MapFragment : Fragment() {
         viewModelFactory = MapViewModelFactory(
             Repository.getInstance(
                 APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-            )
+            ,requireContext())
         )
 
 

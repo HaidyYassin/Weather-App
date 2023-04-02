@@ -18,11 +18,21 @@ class HomeViewModel(private val _repo: RepositoryInterface,private val location:
     private var _weather = MutableStateFlow<ApiState>(ApiState.Loading)
     val weather  = _weather.asStateFlow()
 
-    init {
+   /* init {
         getWeatherOverNetwork()
+    }*/
+
+    fun getWeatherOverNetwork(place: FavPlace) = viewModelScope.launch(Dispatchers.IO) {
+        _repo.getWeatherOverNetwork(lon=place.longitude.toString(), lat = place.latitude.toString())
+            .catch {e->
+                _weather.value = ApiState.Failure(e)
+
+            }.collect{
+                _weather.value = ApiState.Success(it)
+            }
     }
 
-    private fun getWeatherOverNetwork() = viewModelScope.launch(Dispatchers.IO) {
+   /* private fun getWeatherOverNetwork() = viewModelScope.launch(Dispatchers.IO) {
         println(location.first.toString()+"   "+location.second.toString())
         delay(4000)
         _repo.getWeatherOverNetwork(lon=location.first.toString(), lat = location.second.toString())
@@ -32,7 +42,7 @@ class HomeViewModel(private val _repo: RepositoryInterface,private val location:
             }.collect{
                 _weather.value = ApiState.Success(it)
             }
-    }
+    }*/
 
 
 

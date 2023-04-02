@@ -1,13 +1,16 @@
 package eg.iti.sv.weather.models
 
+import android.content.Context
 import eg.iti.sv.weather.db.LocalSource
 import eg.iti.sv.weather.network.RemoteSource
+import eg.iti.sv.weather.utils.getCustomizedSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class Repository private constructor(
     var remoteSource: RemoteSource,
-    var localSource: LocalSource
+    var localSource: LocalSource,
+    val context: Context
 ) : RepositoryInterface{
 
 
@@ -15,10 +18,11 @@ class Repository private constructor(
         private var instance:Repository? = null
         fun getInstance(
             remoteSource: RemoteSource,
-            localSource: LocalSource
+            localSource: LocalSource,
+            context: Context
         ) : Repository {
             return instance ?: synchronized(this){
-                val temp = Repository(remoteSource,localSource)
+                val temp = Repository(remoteSource,localSource,context)
                 instance = temp
                 temp
             }
@@ -30,9 +34,24 @@ class Repository private constructor(
         lon: String?,
         exclude: String?,
         units: String?,
-        appid: String?
+        lang:String?,
+        appid: String?,
     ): Flow<WeatherResponse> {
-        return flowOf( remoteSource.getWeatherOverNetwork(lat,lon))
+        var unit:String
+        var lan:String
+        val appSettings = getCustomizedSettings(context)
+        if(appSettings?.temp == "Celsius")
+            unit = "metric"
+        else if(appSettings?.temp == "Fahrenheit")
+            unit = "imperial"
+        else
+            unit ="standard"
+
+        if(appSettings?.lang =="Arabic")
+            lan = "ar"
+        else
+            lan ="en"
+        return flowOf( remoteSource.getWeatherOverNetwork(lat,lon,units = unit, lang = lan))
     }
 
     override suspend fun removePlace(favPlace: FavPlace) {
