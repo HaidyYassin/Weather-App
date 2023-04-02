@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -13,6 +14,12 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import eg.iti.sv.weather.home.view.CurrentLocation
+import eg.iti.sv.weather.home.view.HomeFragment
+import eg.iti.sv.weather.models.AppSettings
+import eg.iti.sv.weather.utils.checkLanguage
+import eg.iti.sv.weather.utils.createAppSettings
+import eg.iti.sv.weather.utils.firstTime
+import eg.iti.sv.weather.utils.getCustomizedSettings
 
 
 class HomeActivity : AppCompatActivity(){
@@ -25,6 +32,8 @@ class HomeActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+
 
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -60,6 +69,23 @@ class HomeActivity : AppCompatActivity(){
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(getCustomizedSettings(this) == null){
+            createAppSettings(this)
+            HomeFragment.appSettings = getCustomizedSettings(this) as AppSettings
+        }else{
+            println(getCustomizedSettings(this))
+            HomeFragment.appSettings = getCustomizedSettings(this) as AppSettings
+        }
+
+        if(HomeFragment.appSettings.lang == "Arabic")
+            checkLanguage("ar",this)
+        else
+            checkLanguage("en",this)
+
     }
 
 

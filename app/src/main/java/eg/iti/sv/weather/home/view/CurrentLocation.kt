@@ -12,14 +12,10 @@ import android.os.Looper
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
-class CurrentLocation(var activity:Activity,var context: Context) {
+class CurrentLocation(var activity:Activity,var context: Context,var longitude:Double =0.0, var latitude:Double =0.0) {
     private val REQUEST_CODE = 5
      var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-     private var longitude:Double =0.0
-     private var latitude:Double =0.0
      var myaddress =" "
-
-
 
     private fun checkPermissions():Boolean{
         return ActivityCompat.checkSelfPermission(
@@ -82,18 +78,19 @@ class CurrentLocation(var activity:Activity,var context: Context) {
     }
 
     @SuppressLint("MissingPermission")
-     fun getLastLocation():Pair<Double,Double>{
+     fun getLastLocation(){
+        //:Pair<Double,Double>
         if(checkPermissions()){
             if(isLocationEnabled()){
                 requestNewLocationData()
-                return Pair(longitude,latitude)
+               // return Pair(longitude,latitude)
             }
             else{
                 //Toast.makeText(this,"Turn on Location", Toast.LENGTH_SHORT).show()
             }
         }else
             requestPermissions()
-        return Pair(0.0 , 0.0)
+        //return Pair(0.0 , 0.0)
     }
 
 }

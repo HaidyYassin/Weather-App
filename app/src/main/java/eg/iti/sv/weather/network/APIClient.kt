@@ -23,9 +23,10 @@ class APIClient private constructor() : RemoteSource{
         lon: String?,
         exclude: String?,
         units: String?,
+        lang:String?,
         appid: String?
     ): WeatherResponse {
-        val root = retrofitService.getWeather(lat,lon)
+        val root = retrofitService.getWeather(lat,lon,lang=lang, units = units)
         println(root.body())
         return root.body()!!
     }

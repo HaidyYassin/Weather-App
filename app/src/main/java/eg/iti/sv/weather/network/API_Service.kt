@@ -11,7 +11,8 @@ interface API_Service {
     suspend fun getWeather(@Query("lat") lat: String? ,
                            @Query("lon") lon: String?,
                            @Query("exclude") exclude: String?="minutely",
-                           @Query("units") units: String?="metric",
+                           @Query("units") units: String?,
+                           @Query("lang") lang: String?,
                            @Query("appid") appid: String?="f2f9ec409c67b8498f33c2bf4c7fb7e7"): Response<WeatherResponse>
 
 }

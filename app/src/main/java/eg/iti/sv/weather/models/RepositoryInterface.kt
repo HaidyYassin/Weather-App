@@ -9,6 +9,7 @@ interface RepositoryInterface {
         lon: String?,
         exclude: String?="minutely",
         units: String?="metric",
+        lang:String?="en",
         appid: String?="f2f9ec409c67b8498f33c2bf4c7fb7e7"
     ): Flow<WeatherResponse>
     suspend fun removePlace(favPlace: FavPlace)

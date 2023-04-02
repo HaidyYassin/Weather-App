@@ -17,12 +17,13 @@ import eg.iti.sv.weather.databinding.FragmentHomeBinding
 import eg.iti.sv.weather.db.ConcreteLocalSource
 import eg.iti.sv.weather.home.viewmodel.HomeViewModel
 import eg.iti.sv.weather.home.viewmodel.HomeViewModelFactory
+import eg.iti.sv.weather.models.AppSettings
 import eg.iti.sv.weather.models.Constants
+import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Repository
 import eg.iti.sv.weather.network.APIClient
 import eg.iti.sv.weather.network.ApiState
-import eg.iti.sv.weather.utils.getDateString
-import kotlinx.coroutines.delay
+import eg.iti.sv.weather.utils.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -37,6 +38,12 @@ class HomeFragment : Fragment() {
     private lateinit var weeklyAdapter: WeekWeatherAdapter
     private lateinit var currentLocation: CurrentLocation
     private lateinit var longlat:Pair<Double,Double>
+    lateinit var place: FavPlace
+
+    companion object{
+        @JvmStatic lateinit var appSettings:AppSettings
+    }
+
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
@@ -47,14 +54,36 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater,container,false)
 
         currentLocation =CurrentLocation(requireActivity(),requireContext())
-        longlat = currentLocation.getLastLocation()
+        currentLocation.getLastLocation()
+        longlat = Pair(0.0,0.0)
+        place = FavPlace(currentLocation.myaddress,currentLocation.longitude,currentLocation.latitude,currentLocation.longitude.toString()+currentLocation.latitude.toString())
+
+
+        if(getCustomizedSettings(requireContext()) == null){
+            createAppSettings(requireContext())
+            appSettings = getCustomizedSettings(requireContext()) as AppSettings
+        }else{
+            println(getCustomizedSettings(requireContext()))
+            appSettings = getCustomizedSettings(requireContext()) as AppSettings
+        }
+
+        if(appSettings.lang == "Arabic")
+            updateResources(requireContext(),"ar")
+        else
+            updateResources(requireContext(),"en")
+
+
+
         return binding.root
     }
 
+
+
     override fun onResume() {
         super.onResume()
-         //longlat = currentLocation.getLastLocation()
+        currentLocation.getLastLocation()
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,12 +91,11 @@ class HomeFragment : Fragment() {
           viewModelFactory = HomeViewModelFactory(
               Repository.getInstance(
                   APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-              ),longlat
+              ,requireContext()),longlat
           )
 
-
-
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+        viewModel.getWeatherOverNetwork(place)
         lifecycleScope.launch {
             viewModel.weather.collectLatest {
                 when(it){
@@ -117,6 +145,7 @@ class HomeFragment : Fragment() {
 
 
     }
+
 
 
 }
