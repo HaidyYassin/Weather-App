@@ -2,20 +2,39 @@ package eg.iti.sv.weather.utils
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import androidx.room.ProvidedTypeConverter
+import androidx.room.TypeConverter
 import eg.iti.sv.weather.home.view.HomeFragment
 import eg.iti.sv.weather.models.AppSettings
+import eg.iti.sv.weather.models.FavPlace
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 var appSettings:AppSettings = HomeFragment.appSettings
 
+//place object to string converter
 
+/*@ProvidedTypeConverter
+class PlaceConverter{
+    @TypeConverter
+    fun placeToString(place: FavPlace): String {
+        return place.toString()
+    }
+
+    @TypeConverter
+    fun stringToPlace(string: String):FavPlace{
+        return  FavPlace.parse(string)
+    }
+}*/
+
+
+
+
+//date and time converters
 private lateinit var simpleDateFormat:SimpleDateFormat
 private lateinit var simpleDayFormat:SimpleDateFormat
 private lateinit var simpleHourFormat:SimpleDateFormat
-
-
 fun getHourString(time: Int): String {
     getLanguge()
     return simpleHourFormat.format(time * 1000L)
@@ -27,7 +46,6 @@ fun getDayString(time: Int) : String {
     getLanguge()
     return simpleDayFormat.format(time * 1000L)
 }
-
 fun getWeekDay(time: Int):String{
     val day = getDayString(time)
     var fullDayName = ""
@@ -55,6 +73,8 @@ fun getWeekDay(time: Int):String{
     return fullDayName
 }
 
+
+//language converte
 fun getLanguge(){
     if(appSettings.lang =="English"){
         simpleDateFormat =SimpleDateFormat("dd MMMM, h:mm a",Locale.ENGLISH)
@@ -67,15 +87,12 @@ fun getLanguge(){
         simpleHourFormat = SimpleDateFormat("h:mm a", Locale("ar"))
     }
 }
-
-
 fun checkLanguage(language: String?,context: Context) {
     val locale = Locale(language)
     Locale.setDefault(locale)
     val config = Configuration()
     config.locale = locale
     context .resources.updateConfiguration(config, context.resources.displayMetrics)}
-
 fun updateResources(context: Context, language: String) {
     val locale = Locale(language)
     Locale.setDefault(locale)
@@ -84,5 +101,3 @@ fun updateResources(context: Context, language: String) {
     config.locale = locale
     res.updateConfiguration(config, res.getDisplayMetrics())
 }
-// Locale("ar")
-//"h:mm a" -----> 12:08 PM

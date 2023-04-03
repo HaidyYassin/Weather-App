@@ -23,6 +23,7 @@ import eg.iti.sv.weather.utils.getCustomizedSettings
 
 
 class HomeActivity : AppCompatActivity(){
+    private lateinit var currentLocation: CurrentLocation
 
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -32,9 +33,7 @@ class HomeActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-
-
+        currentLocation = CurrentLocation(this,this)
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.navigator)
@@ -73,6 +72,7 @@ class HomeActivity : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
+        currentLocation.getLastLocation()
         if(getCustomizedSettings(this) == null){
             createAppSettings(this)
             HomeFragment.appSettings = getCustomizedSettings(this) as AppSettings

@@ -31,6 +31,13 @@
     <string name="saturday">Saturday</string>
     <string name="map_api">AIzaSyALEzKGnX8Gta5jX2RArUMQgtcMtd4cYEs</string>
     <string name="search">Search</string>
-
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="add_alert">Add Alert</string>
+    <string name="select_date">Select Date</string>
+    <string name="alarm">Alarm</string>
+    <string name="notification">Notification</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

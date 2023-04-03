@@ -30,6 +30,14 @@
     <string name="saturday">Saturday</string>
     <string name="map_api">AIzaSyALEzKGnX8Gta5jX2RArUMQgtcMtd4cYEs</string>
     <string name="search">ابحث</string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
+    <string name="add_alert">اضف تنبية</string>
+    <string name="select_date">اختر التاريخ</string>
+    <string name="alarm">تنبية</string>
+    <string name="notification">اشعارات</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">الغاء</string>
 
 
 </resources>

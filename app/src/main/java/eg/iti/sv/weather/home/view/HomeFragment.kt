@@ -24,6 +24,7 @@ import eg.iti.sv.weather.models.Repository
 import eg.iti.sv.weather.network.APIClient
 import eg.iti.sv.weather.network.ApiState
 import eg.iti.sv.weather.utils.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -37,7 +38,7 @@ class HomeFragment : Fragment() {
     private lateinit var hourlyAdapter: HourWeatherAdapter
     private lateinit var weeklyAdapter: WeekWeatherAdapter
     private lateinit var currentLocation: CurrentLocation
-    private lateinit var longlat:Pair<Double,Double>
+    private lateinit var longlat:String
     lateinit var place: FavPlace
 
     companion object{
@@ -55,8 +56,6 @@ class HomeFragment : Fragment() {
 
         currentLocation =CurrentLocation(requireActivity(),requireContext())
         currentLocation.getLastLocation()
-        longlat = Pair(0.0,0.0)
-        place = FavPlace(currentLocation.myaddress,currentLocation.longitude,currentLocation.latitude,currentLocation.longitude.toString()+currentLocation.latitude.toString())
 
 
         if(getCustomizedSettings(requireContext()) == null){
@@ -72,17 +71,15 @@ class HomeFragment : Fragment() {
         else
             updateResources(requireContext(),"en")
 
-
-
         return binding.root
     }
 
 
 
-    override fun onResume() {
+   /* override fun onResume() {
         super.onResume()
         currentLocation.getLastLocation()
-    }
+    }*/
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,11 +88,11 @@ class HomeFragment : Fragment() {
           viewModelFactory = HomeViewModelFactory(
               Repository.getInstance(
                   APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-              ,requireContext()),longlat
+              ,requireContext())
           )
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-        viewModel.getWeatherOverNetwork(place)
+       // viewModel.getWeatherOverNetwork(place)
         lifecycleScope.launch {
             viewModel.weather.collectLatest {
                 when(it){
@@ -145,7 +142,5 @@ class HomeFragment : Fragment() {
 
 
     }
-
-
 
 }
