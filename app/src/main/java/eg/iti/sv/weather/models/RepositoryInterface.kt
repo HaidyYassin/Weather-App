@@ -15,4 +15,8 @@ interface RepositoryInterface {
     suspend fun removePlace(favPlace: FavPlace)
     suspend fun insertPlace(favPlace: FavPlace)
     suspend fun getAllStoredPlaces(): Flow<List<FavPlace>>
+
+    suspend fun insertAlert(alertDetails: AlertDetails)
+    suspend fun deleteAlert(alertDetails: AlertDetails)
+    suspend fun getAllAlerts(): Flow<List<AlertDetails>>
 }

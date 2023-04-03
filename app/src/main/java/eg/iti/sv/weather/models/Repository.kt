@@ -65,4 +65,16 @@ class Repository private constructor(
     override suspend fun getAllStoredPlaces(): Flow<List<FavPlace>> {
         return localSource.getAllFavPlaces()
     }
+
+    override suspend fun insertAlert(alertDetails: AlertDetails) {
+        localSource.insertAlert(alertDetails)
+    }
+
+    override suspend fun deleteAlert(alertDetails: AlertDetails) {
+        localSource.deleteAlert(alertDetails)
+    }
+
+    override suspend fun getAllAlerts(): Flow<List<AlertDetails>> {
+        return localSource.getAllAlerts()
+    }
 }

@@ -11,11 +11,21 @@ import android.os.Looper
 
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class CurrentLocation(var activity:Activity,var context: Context,var longitude:Double =0.0, var latitude:Double =0.0) {
     private val REQUEST_CODE = 5
-     var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-     var myaddress =" "
+    var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+    var myaddress =" "
+
+    companion object {
+       @JvmStatic val locationStateFlow = MutableStateFlow("0,0")
+    }
+
 
     private fun checkPermissions():Boolean{
         return ActivityCompat.checkSelfPermission(
@@ -57,40 +67,47 @@ class CurrentLocation(var activity:Activity,var context: Context,var longitude:D
 
     }
 
-    private val mLocationCallback: LocationCallback = object : LocationCallback(){
-        @SuppressLint("SuspiciousIndentation")
-        override fun onLocationResult(locationResult: LocationResult) {
-            super.onLocationResult(locationResult)
-            val mLastLocation = locationResult.lastLocation
-            longitude =mLastLocation?.longitude as Double
-            latitude =mLastLocation?.latitude as Double
-            val geocoder = Geocoder(context)
-            println("--------------------------")
-            println(longitude.toString()+"  "+latitude.toString())
+    private val mLocationCallback: LocationCallback = object : LocationCallback() {
+            @SuppressLint("SuspiciousIndentation")
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
 
-            val theAddress = geocoder.getFromLocation(latitude as Double, longitude as Double,5)
-            if(theAddress?.size!! > 0)
-            {
+
+                val mLastLocation = locationResult.lastLocation
+                longitude = mLastLocation?.longitude as Double
+                latitude = mLastLocation?.latitude as Double
+                val geocoder = Geocoder(context)
                 println("--------------------------")
-                println(theAddress?.get(0)?.countryName +theAddress?.get(0)?.subAdminArea +theAddress?.get(0)?.adminArea)
-                myaddress =theAddress?.get(0)?.subAdminArea.toString()
-            }}
-    }
+                println(longitude.toString() + "  " + latitude.toString())
+
+
+                GlobalScope.launch {
+                     locationStateFlow.emit(longitude.toString() + "," + latitude.toString()+",")
+                }
+
+
+                val theAddress =
+                    geocoder.getFromLocation(latitude as Double, longitude as Double, 5)
+                if (theAddress?.size!! > 0) {
+                    println("--------------------------")
+                    println(
+                        theAddress?.get(0)?.countryName + theAddress?.get(0)?.subAdminArea + theAddress?.get(
+                            0
+                        )?.adminArea
+                    )
+                    myaddress = theAddress?.get(0)?.subAdminArea.toString()
+                }
+            }
+        }
 
     @SuppressLint("MissingPermission")
      fun getLastLocation(){
-        //:Pair<Double,Double>
         if(checkPermissions()){
             if(isLocationEnabled()){
                 requestNewLocationData()
-               // return Pair(longitude,latitude)
-            }
-            else{
-                //Toast.makeText(this,"Turn on Location", Toast.LENGTH_SHORT).show()
             }
         }else
             requestPermissions()
-        //return Pair(0.0 , 0.0)
     }
 
 }

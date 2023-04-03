@@ -48,21 +48,16 @@ class FavFragment : Fragment(),OnFavClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.places.observe(requireActivity()){products->
-            if(products != null){
-                binding.favPlacesRecycler.visibility = View.VISIBLE
-                binding.animationViewFav.visibility = View.INVISIBLE
+        viewModel.places.observe(requireActivity()){places->
+            if(places != null){
 
                 layoutManager = LinearLayoutManager(requireContext())
                 layoutManager.orientation = RecyclerView.VERTICAL
-                adapter = FavPlaceAdapter(requireContext(),products,this)
+                adapter = FavPlaceAdapter(requireContext(),places,this)
                 binding.favPlacesRecycler.adapter = this.adapter
                 binding.favPlacesRecycler.layoutManager = layoutManager
 
-            }else{
-                binding.animationViewFav.visibility = View.VISIBLE
-                binding.favPlacesRecycler.visibility = View.INVISIBLE
-        }}
+            }}
 
         binding.addFavBtn.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_favFragment_to_mapFragment)

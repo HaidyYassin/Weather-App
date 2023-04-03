@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import eg.iti.sv.weather.models.AlertDetails
 import eg.iti.sv.weather.models.FavPlace
 
-@Database(entities = arrayOf(FavPlace::class), version = 1 )
+
+@Database(entities = arrayOf(FavPlace::class,AlertDetails::class), version = 2 )
 
 abstract class AppDataBase  : RoomDatabase(){
     abstract fun getFavPlaceDao(): FavPlaceDao
+    abstract fun getAlertsDao() : AlertsDao
     companion object{
         @Volatile
         private var INSTANCE: AppDataBase? = null
