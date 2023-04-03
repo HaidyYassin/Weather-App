@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import eg.iti.sv.weather.models.AppSettings
+import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.utils.createAppSettings
 import eg.iti.sv.weather.utils.getCustomizedSettings
 
@@ -17,6 +19,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         getSupportActionBar()?.hide()
+
+        if(getCustomizedSettings(this) == null){
+            createAppSettings(this)
+            Settings.settings = getCustomizedSettings(this) as AppSettings
+        }else{
+            println(getCustomizedSettings(this))
+            Settings.settings = getCustomizedSettings(this) as AppSettings
+        }
+
 
 
         window.setFlags(

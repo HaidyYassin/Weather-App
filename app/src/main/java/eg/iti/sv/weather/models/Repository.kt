@@ -39,15 +39,15 @@ class Repository private constructor(
     ): Flow<WeatherResponse> {
         var unit:String
         var lan:String
-        val appSettings = getCustomizedSettings(context)
-        if(appSettings?.temp == "Celsius")
+      //  val appSettings = getCustomizedSettings(context)
+        if(Settings.settings?.temp == "Celsius")
             unit = "metric"
-        else if(appSettings?.temp == "Fahrenheit")
+        else if(Settings.settings?.temp == "Fahrenheit")
             unit = "imperial"
         else
             unit ="standard"
 
-        if(appSettings?.lang =="Arabic")
+        if(Settings.settings?.lang =="Arabic")
             lan = "ar"
         else
             lan ="en"

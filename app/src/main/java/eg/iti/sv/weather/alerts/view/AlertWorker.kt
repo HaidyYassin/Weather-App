@@ -1,0 +1,58 @@
+package com.example.wheatherforcast.alerts.worker
+
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
+import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import eg.iti.sv.weather.alerts.view.AlarmActivity
+import eg.iti.sv.weather.alerts.view.AlertsFragment
+import eg.iti.sv.weather.utils.NotificationHelper
+import kotlinx.coroutines.*
+import java.util.*
+
+
+class AlertWorker(val context: Context, workerParams: WorkerParameters) :
+    CoroutineWorker(context, workerParams) {
+    var  sharedPreference =context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+    //var approximateTemp= ReaadableTemp()
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun doWork(): Result {
+
+        Log.i("input data",inputData.getString("typeAlert").toString() )
+
+        if (inputData.getString("typeAlert").toString().equals("notification")) {
+
+          //  var city= sharedPreference.getString(Constants.cityName,"").toString()
+
+           /* var contentNotification=(Constants.response?.current?.weather?.get(0)?.description)+"  "+approximateTemp(
+                (Constants.response?.current!!.temp)!!.minus(273.15))+"\u00B0"*/
+
+            NotificationHelper(context).createNotification(
+                title = "Hello",
+               content = "Hello from the other side",
+            )
+            Log.i("fire noti", "notti ")
+        } else {
+            fireAlarmDialog()
+            Log.i("fire alarm", "Alaarmm ")
+        }
+
+        return Result.success()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun fireAlarmDialog() {
+        if (Settings.canDrawOverlays(context)) {
+            val intent = Intent(context, AlarmActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK /*or Intent.FLAG_INCLUDE_STOPPED_PACKAGES or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
+            context.startActivity(intent)
+
+        }
+    }
+
+}

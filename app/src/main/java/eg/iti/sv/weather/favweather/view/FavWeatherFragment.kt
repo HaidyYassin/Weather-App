@@ -24,6 +24,7 @@ import eg.iti.sv.weather.home.viewmodel.HomeViewModelFactory
 import eg.iti.sv.weather.models.Constants
 import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Repository
+import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.network.APIClient
 import eg.iti.sv.weather.network.ApiState
 import eg.iti.sv.weather.utils.getDateString
@@ -45,11 +46,15 @@ class FavWeatherFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if(Settings.settings.lang == "Arabic")
+            Settings.setAppLocale("ar",requireContext())
+        else
+            Settings.setAppLocale("en",requireContext())
+
         binding = FragmentFavWeatherBinding.inflate(inflater,container,false)
         return binding.root
     }
