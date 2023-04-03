@@ -2,6 +2,10 @@ package eg.iti.sv.weather.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,16 +21,14 @@ import eg.iti.sv.weather.databinding.FragmentHomeBinding
 import eg.iti.sv.weather.db.ConcreteLocalSource
 import eg.iti.sv.weather.home.viewmodel.HomeViewModel
 import eg.iti.sv.weather.home.viewmodel.HomeViewModelFactory
-import eg.iti.sv.weather.models.AppSettings
-import eg.iti.sv.weather.models.Constants
-import eg.iti.sv.weather.models.FavPlace
-import eg.iti.sv.weather.models.Repository
+import eg.iti.sv.weather.models.*
 import eg.iti.sv.weather.network.APIClient
 import eg.iti.sv.weather.network.ApiState
 import eg.iti.sv.weather.utils.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -41,9 +43,9 @@ class HomeFragment : Fragment() {
     private lateinit var longlat:String
     lateinit var place: FavPlace
 
-    companion object{
+  /*  companion object{
         @JvmStatic lateinit var appSettings:AppSettings
-    }
+    }*/
 
 
     @SuppressLint("UseRequireInsteadOfGet")
@@ -52,24 +54,15 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentHomeBinding.inflate(inflater,container,false)
+        if(Settings.settings.lang == "Arabic")
+            Settings.setAppLocale("ar",requireContext())
+        else
+            Settings.setAppLocale("en",requireContext())
 
+
+        binding = FragmentHomeBinding.inflate(inflater,container,false)
         currentLocation =CurrentLocation(requireActivity(),requireContext())
         currentLocation.getLastLocation()
-
-
-        if(getCustomizedSettings(requireContext()) == null){
-            createAppSettings(requireContext())
-            appSettings = getCustomizedSettings(requireContext()) as AppSettings
-        }else{
-            println(getCustomizedSettings(requireContext()))
-            appSettings = getCustomizedSettings(requireContext()) as AppSettings
-        }
-
-        if(appSettings.lang == "Arabic")
-            updateResources(requireContext(),"ar")
-        else
-            updateResources(requireContext(),"en")
 
         return binding.root
     }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">weather</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="fav">Favourites</string>
@@ -39,5 +38,7 @@
     <string name="notification">Notification</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="weather_alert">Weather Alert</string>
+    <string name="dismiss">Dismiss</string>
 
 </resources>

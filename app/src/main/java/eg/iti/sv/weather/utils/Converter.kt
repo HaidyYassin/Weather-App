@@ -7,11 +7,11 @@ import androidx.room.TypeConverter
 import eg.iti.sv.weather.home.view.HomeFragment
 import eg.iti.sv.weather.models.AppSettings
 import eg.iti.sv.weather.models.FavPlace
+import eg.iti.sv.weather.models.Settings
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-var appSettings:AppSettings = HomeFragment.appSettings
 
 //place object to string converter
 
@@ -50,7 +50,7 @@ fun getWeekDay(time: Int):String{
     val day = getDayString(time)
     var fullDayName = ""
 
-    if(appSettings.lang =="English"){
+    if(Settings.settings.lang =="English"){
     when (day){
         "Sat" -> fullDayName = "Saturday"
         "Sun" -> fullDayName = "Sunday"
@@ -76,7 +76,7 @@ fun getWeekDay(time: Int):String{
 
 //language converte
 fun getLanguge(){
-    if(appSettings.lang =="English"){
+    if(Settings.settings.lang =="English"){
         simpleDateFormat =SimpleDateFormat("dd MMMM, h:mm a",Locale.ENGLISH)
         simpleDayFormat = SimpleDateFormat("EEE", Locale.ENGLISH)
         simpleHourFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
@@ -87,7 +87,7 @@ fun getLanguge(){
         simpleHourFormat = SimpleDateFormat("h:mm a", Locale("ar"))
     }
 }
-fun checkLanguage(language: String?,context: Context) {
+fun checkLanguage(language: String,context: Context) {
     val locale = Locale(language)
     Locale.setDefault(locale)
     val config = Configuration()

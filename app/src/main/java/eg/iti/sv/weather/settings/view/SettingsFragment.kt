@@ -10,6 +10,7 @@ import android.widget.RadioButton
 import eg.iti.sv.weather.R
 import eg.iti.sv.weather.databinding.FragmentSettingsBinding
 import eg.iti.sv.weather.models.AppSettings
+import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.utils.createAppSettings
 import eg.iti.sv.weather.utils.getCustomizedSettings
 import org.intellij.lang.annotations.Language
@@ -22,13 +23,17 @@ class SettingsFragment : Fragment() {
     private lateinit var  location:RadioButton
     private lateinit var wind:RadioButton
     private lateinit var temp:RadioButton
-    private lateinit var settingsObj:AppSettings
     private lateinit var uiState:AppSettings
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        if(Settings.settings.lang == "Arabic")
+            Settings.setAppLocale("ar",requireContext())
+        else
+            Settings.setAppLocale("en",requireContext())
 
         binding = FragmentSettingsBinding.inflate(inflater,container,false)
 
@@ -57,8 +62,6 @@ class SettingsFragment : Fragment() {
             binding.radioMap.isChecked = true
 
 
-        settingsObj = AppSettings()
-
         return binding.root
     }
 
@@ -71,13 +74,13 @@ class SettingsFragment : Fragment() {
             when (location.text) {
                 getString(R.string.gps) -> {
                     println("gps")
-                    settingsObj.location = "GPS"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.location = "GPS"
+                    createAppSettings(requireContext(),Settings.settings)
                 }
                 getString(R.string.map) -> {
                     println("map")
-                    settingsObj.location ="Map"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.location ="Map"
+                    createAppSettings(requireContext(),Settings.settings)
                 }
             }
         }
@@ -89,13 +92,21 @@ class SettingsFragment : Fragment() {
             when (language.text) {
                 getString(R.string.arabic) -> {
                     println("arabic")
-                    settingsObj.lang = "Arabic"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.lang = "Arabic"
+                    createAppSettings(requireContext(),Settings.settings)
+                    requireActivity().finish()
+                    requireActivity().overridePendingTransition(0, 0)
+                    startActivity(requireActivity().intent)
+                    requireActivity().overridePendingTransition(0, 0)
                 }
                 getString(R.string.english) -> {
                     println("english")
-                    settingsObj.lang = "English"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.lang = "English"
+                    createAppSettings(requireContext(),Settings.settings)
+                    requireActivity().finish()
+                    requireActivity().overridePendingTransition(0, 0)
+                    startActivity(requireActivity().intent)
+                    requireActivity().overridePendingTransition(0, 0)
                 }
             }
         }
@@ -107,18 +118,18 @@ class SettingsFragment : Fragment() {
             when (temp.text) {
                 getString(R.string.celsius) -> {
                     println("c")
-                    settingsObj.temp ="Celsius"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.temp ="Celsius"
+                    createAppSettings(requireContext(),Settings.settings)
                 }
                 getString(R.string.fahrenheit) -> {
                     println("f")
-                    settingsObj.temp ="Fahrenheit"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.temp ="Fahrenheit"
+                    createAppSettings(requireContext(),Settings.settings)
                 }
                 getString(R.string.kelvin) -> {
                     println("k")
-                    settingsObj.temp ="Kelvin"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.temp ="Kelvin"
+                    createAppSettings(requireContext(),Settings.settings)
                 }
             }
         }
@@ -130,23 +141,19 @@ class SettingsFragment : Fragment() {
             when (wind.text) {
                 getString(R.string.miles_hour) -> {
                     println("miles")
-                    settingsObj.wind = "miles/hour"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.wind = "miles/hour"
+                    createAppSettings(requireContext(),Settings.settings)
                 }
                 getString(R.string.meter_sec) -> {
                     println("meters")
-                    settingsObj.wind = "meter/sec"
-                    createAppSettings(requireContext(),settingsObj)
+                    Settings.settings.wind = "meter/sec"
+                    createAppSettings(requireContext(),Settings.settings)
 
                 }
             }
         }
 
-
-
     }
-
-
 
 
 }

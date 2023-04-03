@@ -1,5 +1,10 @@
 package eg.iti.sv.weather
 
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +21,12 @@ import com.google.android.material.navigation.NavigationView
 import eg.iti.sv.weather.home.view.CurrentLocation
 import eg.iti.sv.weather.home.view.HomeFragment
 import eg.iti.sv.weather.models.AppSettings
+import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.utils.checkLanguage
 import eg.iti.sv.weather.utils.createAppSettings
 import eg.iti.sv.weather.utils.firstTime
 import eg.iti.sv.weather.utils.getCustomizedSettings
+import java.util.*
 
 
 class HomeActivity : AppCompatActivity(){
@@ -30,8 +37,15 @@ class HomeActivity : AppCompatActivity(){
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: Toolbar
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(Settings.settings.lang == "Arabic")
+           Settings.setAppLocale("ar",this)
+        else
+            Settings.setAppLocale("en",this)
+
         setContentView(R.layout.activity_home)
         currentLocation = CurrentLocation(this,this)
 
@@ -73,18 +87,11 @@ class HomeActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
         currentLocation.getLastLocation()
-        if(getCustomizedSettings(this) == null){
-            createAppSettings(this)
-            HomeFragment.appSettings = getCustomizedSettings(this) as AppSettings
-        }else{
-            println(getCustomizedSettings(this))
-            HomeFragment.appSettings = getCustomizedSettings(this) as AppSettings
-        }
 
-        if(HomeFragment.appSettings.lang == "Arabic")
+       /* if(Settings.settings.lang == "Arabic")
             checkLanguage("ar",this)
         else
-            checkLanguage("en",this)
+            checkLanguage("en",this)*/
 
     }
 

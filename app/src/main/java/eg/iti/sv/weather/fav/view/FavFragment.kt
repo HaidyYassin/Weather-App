@@ -18,6 +18,7 @@ import eg.iti.sv.weather.fav.viewmodel.FavViewModel
 import eg.iti.sv.weather.fav.viewmodel.FavViewModelFactory
 import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Repository
+import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.network.APIClient
 
 
@@ -32,6 +33,12 @@ class FavFragment : Fragment(),OnFavClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        if(Settings.settings.lang == "Arabic")
+            Settings.setAppLocale("ar",requireContext())
+        else
+            Settings.setAppLocale("en",requireContext())
+
         binding = FragmentFavBinding.inflate(inflater,container,false)
 
         viewModelFactory = FavViewModelFactory(
