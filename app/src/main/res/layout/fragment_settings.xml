@@ -10,141 +10,222 @@
     tools:context=".settings.view.SettingsFragment">
 
 
-    <RadioGroup
-        android:id="@+id/wind_radio_group"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/purple_transparent"
-        android:orientation="vertical"
-        android:paddingEnd="42dp"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
-
-        <RadioButton
-            android:id="@+id/radio_miles_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/miles_hour" />
-
-        <RadioButton
-            android:id="@+id/radio_meter_sec"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/meter_sec" />
-
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView5"
-        style="@style/settings_text_views"
-        android:layout_marginTop="24dp"
-        android:text="@string/wind_speed"
-        app:layout_constraintStart_toStartOf="@+id/lang_radio_group"
-        app:layout_constraintTop_toBottomOf="@+id/lang_radio_group" />
-
-    <RadioGroup
-        android:id="@+id/temp_radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/purple_transparent"
-        android:orientation="vertical"
-        android:paddingEnd="42dp"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-        <RadioButton
-            android:id="@+id/radio_kelvin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/kelvin" />
-
-        <RadioButton
-            android:id="@+id/radio_celsius"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/celsius" />
-
-        <RadioButton
-            android:id="@+id/radio_fahrenheit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fahrenheit" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/lang_radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/purple_transparent"
-        android:orientation="vertical"
-        android:paddingEnd="64dp"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <RadioButton
-            android:id="@+id/radio_english"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/english" />
-
-        <RadioButton
-            android:id="@+id/radio_arabic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/arabic" />
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView"
-        style="@style/settings_text_views"
-        android:layout_marginTop="24dp"
-        android:text="@string/location"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/settings_text_views"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/language"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/purple_transparent"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/cardView3"
+        app:layout_constraintTop_toTopOf="@+id/cardView3">
 
-    <RadioGroup
-        android:id="@+id/location_radio_group"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/settings_text_views"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/aladin"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="@string/location"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/location_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <RadioButton
+                    android:id="@+id/radio_gps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gps"
+                    android:textSize="12sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/purple_transparent"
-        android:orientation="vertical"
-        android:paddingEnd="80dp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/purple_transparent"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
-            android:id="@+id/radio_gps"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gps" />
+            android:padding="8dp">
 
-        <RadioButton
-            android:id="@+id/radio_map"
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/settings_text_views"
+                android:fontFamily="@font/aladin"
+                android:text="@string/language"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/lang_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                <RadioButton
+                    android:id="@+id/radio_english"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english" />
+
+                <RadioButton
+                    android:id="@+id/radio_arabic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/arabic" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/purple_transparent"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/map" />
-    </RadioGroup>
+            android:padding="8dp">
 
-    <TextView
-        android:id="@+id/textView4"
-        style="@style/settings_text_views"
-        android:layout_marginTop="24dp"
-        android:text="@string/temperature"
-        app:layout_constraintStart_toStartOf="@+id/location_radio_group"
-        app:layout_constraintTop_toBottomOf="@+id/location_radio_group" />
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/settings_text_views"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/aladin"
+                android:text="@string/temperature"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/temp_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+                <RadioButton
+                    android:id="@+id/radio_kelvin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/kelvin" />
+
+                <RadioButton
+                    android:id="@+id/radio_celsius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/celsius" />
+
+                <RadioButton
+                    android:id="@+id/radio_fahrenheit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fahrenheit" />
+
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/secondary"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardView2"
+        app:layout_constraintTop_toTopOf="@+id/cardView2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/purple_transparent"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/settings_text_views"
+                android:fontFamily="@font/aladin"
+                android:text="@string/wind_speed"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/wind_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                <RadioButton
+                    android:id="@+id/radio_miles_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/miles_hour" />
+
+                <RadioButton
+                    android:id="@+id/radio_meter_sec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/meter_sec" />
+
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,15 +2,9 @@ package eg.iti.sv.weather.utils
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import androidx.room.ProvidedTypeConverter
-import androidx.room.TypeConverter
-import eg.iti.sv.weather.home.view.HomeFragment
-import eg.iti.sv.weather.models.AppSettings
-import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Settings
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 
 //place object to string converter
@@ -86,6 +80,10 @@ fun getLanguge(){
        simpleDayFormat = SimpleDateFormat("EEE", Locale.ENGLISH)
         simpleHourFormat = SimpleDateFormat("h:mm a", Locale("ar"))
     }
+}
+
+fun convertMeterspersecToMilesperhour(Meterspersec: Float): Float {
+    return (Meterspersec * 2.23694).toFloat()
 }
 fun checkLanguage(language: String,context: Context) {
     val locale = Locale(language)
