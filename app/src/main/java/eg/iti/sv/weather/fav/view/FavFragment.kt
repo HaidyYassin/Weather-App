@@ -46,7 +46,7 @@ class FavFragment : Fragment(),OnFavClickListener {
         viewModelFactory = FavViewModelFactory(
             Repository.getInstance(
                 APIClient.getInstance(), ConcreteLocalSource(requireContext())
-            ,requireContext()))
+            ))
 
         viewModel = ViewModelProvider(this,viewModelFactory).get(FavViewModel::class.java)
         return binding.root

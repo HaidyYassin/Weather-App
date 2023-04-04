@@ -64,9 +64,7 @@ class MapFragment : Fragment() {
         viewModelFactory = MapViewModelFactory(
             Repository.getInstance(
                 APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-            ,requireContext())
-        )
-
+            ))
 
         binding.searchPlaceTxt.setOnEditorActionListener(object : TextView.OnEditorActionListener{
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
@@ -188,7 +186,6 @@ class MapFragment : Fragment() {
             } ?: throw IllegalStateException("Activity cannot be null")
         }
     }
-
 }
 
 

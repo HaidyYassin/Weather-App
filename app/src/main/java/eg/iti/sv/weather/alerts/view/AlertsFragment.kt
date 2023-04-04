@@ -62,7 +62,7 @@ class AlertsFragment : Fragment(),OnAlertClickListener {
         viewModelFactory = AlertsViewModelFactory(
             Repository.getInstance(
                 APIClient.getInstance(), ConcreteLocalSource(requireContext())
-                ,requireContext()))
+            ))
 
         viewModel = ViewModelProvider(this,viewModelFactory).get(AlertsViewModel::class.java)
 
