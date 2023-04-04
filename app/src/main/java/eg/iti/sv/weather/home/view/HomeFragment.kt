@@ -78,10 +78,10 @@ class HomeFragment : Fragment() {
 
 
 
-   /* override fun onResume() {
+    override fun onResume() {
         super.onResume()
         currentLocation.getLastLocation()
-    }*/
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,7 +90,7 @@ class HomeFragment : Fragment() {
           viewModelFactory = HomeViewModelFactory(
               Repository.getInstance(
                   APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-              ,requireContext())
+              )
           )
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
@@ -138,9 +138,10 @@ class HomeFragment : Fragment() {
                        binding.homeDetailsCard.visibility = View.INVISIBLE
                     }
 
-                    else -> {
-                        Toast.makeText(activity?.applicationContext as Context,"check your connetion", Toast.LENGTH_SHORT).show()
+                    is ApiState.Failure->{
+                        Toast.makeText(activity?.applicationContext as Context,it.msg.message, Toast.LENGTH_SHORT).show()
                     }
+
                 }
             }
         }

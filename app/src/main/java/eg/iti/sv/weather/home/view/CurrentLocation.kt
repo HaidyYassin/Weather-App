@@ -86,7 +86,7 @@ class CurrentLocation(var activity:Activity,var context: Context,var longitude:D
                 }
 
 
-                val theAddress =
+              /*  val theAddress =
                     geocoder.getFromLocation(latitude as Double, longitude as Double, 5)
                 if (theAddress?.size!! > 0) {
                     println("--------------------------")
@@ -96,7 +96,7 @@ class CurrentLocation(var activity:Activity,var context: Context,var longitude:D
                         )?.adminArea
                     )
                     myaddress = theAddress?.get(0)?.subAdminArea.toString()
-                }
+                }*/
             }
         }
 

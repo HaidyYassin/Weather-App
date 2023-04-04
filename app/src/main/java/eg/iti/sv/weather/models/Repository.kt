@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.flowOf
 
 class Repository private constructor(
     var remoteSource: RemoteSource,
-    var localSource: LocalSource,
-    val context: Context
+    var localSource: LocalSource
 ) : RepositoryInterface{
 
 
@@ -18,11 +17,10 @@ class Repository private constructor(
         private var instance:Repository? = null
         fun getInstance(
             remoteSource: RemoteSource,
-            localSource: LocalSource,
-            context: Context
+            localSource: LocalSource
         ) : Repository {
             return instance ?: synchronized(this){
-                val temp = Repository(remoteSource,localSource,context)
+                val temp = Repository(remoteSource,localSource)
                 instance = temp
                 temp
             }
@@ -39,7 +37,6 @@ class Repository private constructor(
     ): Flow<WeatherResponse> {
         var unit:String
         var lan:String
-      //  val appSettings = getCustomizedSettings(context)
         if(Settings.settings?.temp == "Celsius")
             unit = "metric"
         else if(Settings.settings?.temp == "Fahrenheit")

@@ -87,7 +87,7 @@ class FavWeatherFragment : Fragment() {
         viewModelFactory = FavWeatherViewModelFactory(
             Repository.getInstance(
                 APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-            ,requireContext())
+            )
         )
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(FavWeatherViewModel::class.java)
