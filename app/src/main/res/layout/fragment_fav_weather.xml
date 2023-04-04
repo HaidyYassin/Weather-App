@@ -110,7 +110,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/fav_details_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView9"
                     app:layout_constraintStart_toStartOf="@+id/textView9"
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView10"
                     app:layout_constraintStart_toStartOf="@+id/textView10"
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView13"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView15"
                     app:layout_constraintStart_toStartOf="@+id/textView15"
@@ -268,9 +268,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/fav_week_weather_recycler"
-            app:layout_constraintEnd_toEndOf="@+id/cardView2"
-            app:layout_constraintStart_toStartOf="@+id/cardView2"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+            app:layout_constraintEnd_toEndOf="@+id/fav_details_card"
+            app:layout_constraintStart_toStartOf="@+id/fav_details_card"
+            app:layout_constraintTop_toBottomOf="@+id/fav_details_card" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fav_week_weather_recycler"

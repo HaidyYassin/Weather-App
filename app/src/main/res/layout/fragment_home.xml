@@ -112,7 +112,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/home_details_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/transparent"
@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView9"
                     app:layout_constraintStart_toStartOf="@+id/textView9"
@@ -188,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView10"
                     app:layout_constraintStart_toStartOf="@+id/textView10"
@@ -221,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView13"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
@@ -255,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/primary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView15"
                     app:layout_constraintStart_toStartOf="@+id/textView15"
@@ -270,9 +270,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toTopOf="@+id/week_weather_recycler"
-            app:layout_constraintEnd_toEndOf="@+id/cardView2"
-            app:layout_constraintStart_toStartOf="@+id/cardView2"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+            app:layout_constraintEnd_toEndOf="@+id/home_details_card"
+            app:layout_constraintStart_toStartOf="@+id/home_details_card"
+            app:layout_constraintTop_toBottomOf="@+id/home_details_card" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/week_weather_recycler"

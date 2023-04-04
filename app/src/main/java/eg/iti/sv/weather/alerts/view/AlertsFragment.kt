@@ -80,6 +80,11 @@ class AlertsFragment : Fragment(),OnAlertClickListener {
         viewModel.alerts.observe(requireActivity()) { alerts ->
             if (alerts != null) {
 
+                if(alerts.size == 0)
+                    binding.animationViewAlert.visibility = View.VISIBLE
+                else
+                    binding.animationViewAlert.visibility = View.INVISIBLE
+
                 layoutManager = LinearLayoutManager(requireContext())
                 layoutManager.orientation = RecyclerView.VERTICAL
                 adapter = AlertsAdapter(requireContext(), alerts, this)

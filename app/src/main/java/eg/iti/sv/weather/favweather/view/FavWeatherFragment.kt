@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import eg.iti.sv.weather.R
 import eg.iti.sv.weather.databinding.FragmentFavWeatherBinding
 import eg.iti.sv.weather.db.ConcreteLocalSource
 import eg.iti.sv.weather.favweather.viewmodel.FavWeatherViewModel
@@ -37,11 +38,11 @@ class FavWeatherFragment : Fragment() {
     private lateinit var dayLayoutManager: LinearLayoutManager
     private lateinit var hourlyAdapter: HourWeatherAdapter
     private lateinit var weeklyAdapter: WeekWeatherAdapter
-
     private lateinit var viewModel: FavWeatherViewModel
     private lateinit var viewModelFactory: FavWeatherViewModelFactory
-
     private lateinit var binding: FragmentFavWeatherBinding
+    private lateinit var tempUnit:String
+    private lateinit var windUnit:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,6 +55,24 @@ class FavWeatherFragment : Fragment() {
             Settings.setAppLocale("ar",requireContext())
         else
             Settings.setAppLocale("en",requireContext())
+
+        if(Settings.settings.lang == "Arabic")
+            Settings.setAppLocale("ar",requireContext())
+        else
+            Settings.setAppLocale("en",requireContext())
+
+        if(Settings.settings.temp == "Fahrenheit")
+            tempUnit = getString(R.string.f)
+        else if(Settings.settings.temp == "Celsius")
+            tempUnit = getString(R.string.c)
+        else
+            tempUnit = getString(R.string.k)
+
+
+        if(Settings.settings.wind == "meter/sec")
+            windUnit = getString(R.string.m_s)
+        else
+            windUnit = getString(R.string.m_h)
 
         binding = FragmentFavWeatherBinding.inflate(inflater,container,false)
         return binding.root
@@ -78,14 +97,16 @@ class FavWeatherFragment : Fragment() {
                 when(it){
 
                     is ApiState.Success ->{
+                        binding.favDetailsCard.visibility = View.VISIBLE
+
                         binding.favCityNameTxt.text = place.paceName
-                        binding.favTempTxt.text = it.data.current.temp.toString()
+                        binding.favTempTxt.text = it.data.current.temp.toString()+tempUnit
                         binding.favDateTxt.text =  getDateString(it.data.current.dt)
                         binding.favTempDescTxt.text = it.data.current.weather.get(0).description
-                        binding.favHumidityTxt.text = it.data.current.humidity.toString()
-                        binding.favWindTxt.text = it.data.current.wind_speed.toString()
-                        binding.favPressureTxt.text = it.data.current.pressure.toString()
-                        binding.favCloudsTxt.text = it.data.current.clouds.toString()
+                        binding.favHumidityTxt.text = it.data.current.humidity.toString()+" %"
+                        binding.favWindTxt.text = it.data.current.wind_speed.toString()+windUnit
+                        binding.favPressureTxt.text = it.data.current.pressure.toString()+getString(R.string.hpa)
+                        binding.favCloudsTxt.text = it.data.current.clouds.toString()+" %"
                         Glide
                             .with(activity?.applicationContext as Context)
                             .load(Constants.WEATHER_IMAGE_BASE_URL+it.data.current.weather.get(0).icon+".png")
@@ -110,6 +131,7 @@ class FavWeatherFragment : Fragment() {
                     }
                     is ApiState.Loading -> {
                         binding.animationviewloading.visibility = View.VISIBLE
+                        binding.favDetailsCard.visibility = View.INVISIBLE
                     }
 
                     else -> {

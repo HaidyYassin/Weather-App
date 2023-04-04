@@ -1,11 +1,13 @@
 package eg.iti.sv.weather.fav.view
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -47,8 +49,6 @@ class FavFragment : Fragment(),OnFavClickListener {
             ,requireContext()))
 
         viewModel = ViewModelProvider(this,viewModelFactory).get(FavViewModel::class.java)
-
-
         return binding.root
     }
 
@@ -57,18 +57,23 @@ class FavFragment : Fragment(),OnFavClickListener {
 
         viewModel.places.observe(requireActivity()){places->
             if(places != null){
-
+                if(places.size == 0)
+                   binding.animationViewFav.visibility = View.VISIBLE
+                else
+                    binding.animationViewFav.visibility = View.INVISIBLE
                 layoutManager = LinearLayoutManager(requireContext())
                 layoutManager.orientation = RecyclerView.VERTICAL
                 adapter = FavPlaceAdapter(requireContext(),places,this)
                 binding.favPlacesRecycler.adapter = this.adapter
                 binding.favPlacesRecycler.layoutManager = layoutManager
 
-            }}
+            }
+        }
 
         binding.addFavBtn.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_favFragment_to_mapFragment)
         }
+
     }
 
     override fun removeFromFav(favPlace: FavPlace) {
