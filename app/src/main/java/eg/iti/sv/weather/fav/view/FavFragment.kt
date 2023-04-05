@@ -22,6 +22,7 @@ import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Repository
 import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.network.APIClient
+import eg.iti.sv.weather.utils.isNetworkAvailable
 
 
 class FavFragment : Fragment(),OnFavClickListener {
@@ -71,7 +72,12 @@ class FavFragment : Fragment(),OnFavClickListener {
         }
 
         binding.addFavBtn.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_favFragment_to_mapFragment)
+            if(isNetworkAvailable(requireContext())){
+                val bundle = bundleOf("fav" to "fav")
+                Navigation.findNavController(view).navigate(R.id.action_favFragment_to_mapFragment,bundle)
+            }
+            else
+                Toast.makeText(requireContext(),"Check your connection to open map",Toast.LENGTH_SHORT).show()
         }
 
     }

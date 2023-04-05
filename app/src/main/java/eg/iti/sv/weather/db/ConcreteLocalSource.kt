@@ -3,6 +3,7 @@ package eg.iti.sv.weather.db
 import android.content.Context
 import eg.iti.sv.weather.models.AlertDetails
 import eg.iti.sv.weather.models.FavPlace
+import eg.iti.sv.weather.models.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
 class ConcreteLocalSource(context: Context):LocalSource {
@@ -16,6 +17,12 @@ class ConcreteLocalSource(context: Context):LocalSource {
         val db :AppDataBase = AppDataBase.getInstance(context)
        db.getAlertsDao()
     }
+
+    private val weatherDao:WeatherResponseDao by lazy{
+        val db :AppDataBase = AppDataBase.getInstance(context)
+        db.getResponseDao()
+    }
+
 
     override suspend fun insertPlace(favPlace: FavPlace) {
         favPlaceDao.insertPlace(favPlace)
@@ -43,5 +50,13 @@ class ConcreteLocalSource(context: Context):LocalSource {
 
     override suspend fun getAllAlerts(): Flow<List<AlertDetails>> {
        return alertsDao.allAlerts
+    }
+
+    override suspend fun insertWeather(weatherResponse: WeatherResponse) {
+        weatherDao.insertWeather(weatherResponse)
+    }
+
+    override suspend fun getCurrentWeather(): Flow<WeatherResponse>{
+        return  weatherDao.currentWeather
     }
 }

@@ -18,7 +18,14 @@
         android:id="@+id/settingsFragment"
         android:name="eg.iti.sv.weather.settings.view.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <argument
+            android:name="isMap"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/favFragment"
         android:name="eg.iti.sv.weather.fav.view.FavFragment"
@@ -35,7 +42,11 @@
         android:id="@+id/mapFragment"
         android:name="eg.iti.sv.weather.map.view.MapFragment"
         android:label="@string/map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <argument
+            android:name="isFav"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/favWeatherFragment"
         android:name="eg.iti.sv.weather.favweather.view.FavWeatherFragment"

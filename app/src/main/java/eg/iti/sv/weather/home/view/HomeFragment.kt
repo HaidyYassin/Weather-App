@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.location.Geocoder
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -43,6 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var currentLocation: CurrentLocation
     private lateinit var tempUnit:String
     private lateinit var windUnit:String
+    private lateinit var geocoder: Geocoder
 
 
     @SuppressLint("UseRequireInsteadOfGet")
@@ -50,6 +53,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        geocoder = Geocoder(requireContext())
 
         if(Settings.settings.lang == "Arabic")
             Settings.setAppLocale("ar",requireContext())
@@ -87,66 +91,112 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-          viewModelFactory = HomeViewModelFactory(
-              Repository.getInstance(
-                  APIClient.getInstance(), ConcreteLocalSource(activity?.applicationContext as Context)
-              )
-          )
+        viewModelFactory = HomeViewModelFactory(
+            Repository.getInstance(
+                APIClient.getInstance(),
+                ConcreteLocalSource(activity?.applicationContext as Context)
+            )
+        )
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-       // viewModel.getWeatherOverNetwork(place)
-        lifecycleScope.launch {
-            viewModel.weather.collectLatest {
-                when(it){
+        // viewModel.getWeatherOverNetwork(place)
+            lifecycleScope.launch {
+                viewModel.weather.collectLatest {
+                    when (it) {
 
-                    is ApiState.Success ->{
-                        binding.homeDetailsCard.visibility = View.VISIBLE
+                        is ApiState.Success -> {
+                            binding.homeDetailsCard.visibility = View.VISIBLE
 
-                        binding.cityNameTxt.text = currentLocation.myaddress
-                        binding.tempTxt.text = it.data.current.temp.toString()+tempUnit
-                        binding.dateTxt.text =  getDateString(it.data.current.dt)
-                        binding.tempDescTxt.text = it.data.current.weather.get(0).description
-                        binding.humidityTxt.text = it.data.current.humidity.toString()+" %"
-                        binding.windTxt.text = it.data.current.wind_speed.toString()+windUnit
-                        binding.pressureTxt.text = it.data.current.pressure.toString()+getString(R.string.hpa)
-                        binding.cloudsTxt.text = it.data.current.clouds.toString()+" %"
-                        Glide
-                            .with(activity?.applicationContext as Context)
-                            .load(Constants.WEATHER_IMAGE_BASE_URL+it.data.current.weather.get(0).icon+".png")
-                            .into(binding.weatherIcon)
+                            binding.cityNameTxt.text =
+                                //currentLocation.myaddress
+                                getCityName(it.data.lon,it.data.lat)
+                            binding.tempTxt.text = it.data.current.temp.toString() + tempUnit
+                            binding.dateTxt.text = getDateString(it.data.current.dt)
+                            binding.tempDescTxt.text = it.data.current.weather.get(0).description
+                            binding.humidityTxt.text = it.data.current.humidity.toString() + " %"
+                            binding.windTxt.text = it.data.current.wind_speed.toString() + windUnit
+                            binding.pressureTxt.text =
+                                it.data.current.pressure.toString() + getString(R.string.hpa)
+                            binding.cloudsTxt.text = it.data.current.clouds.toString() + " %"
+                            Glide
+                                .with(activity?.applicationContext as Context)
+                                .load(
+                                    Constants.WEATHER_IMAGE_BASE_URL + it.data.current.weather.get(
+                                        0
+                                    ).icon + ".png"
+                                )
+                                .into(binding.weatherIcon)
 
-                        //hourly
-                        hourLayoutManager = LinearLayoutManager(activity?.applicationContext as Context)
-                        hourLayoutManager.orientation = RecyclerView.HORIZONTAL
-                        hourlyAdapter = HourWeatherAdapter(activity?.applicationContext as Context, it.data.hourly)
-                        binding.hourlyWatherRecycler.adapter = hourlyAdapter
-                        binding.hourlyWatherRecycler.layoutManager = hourLayoutManager
+                            //hourly
+                            hourLayoutManager =
+                                LinearLayoutManager(activity?.applicationContext as Context)
+                            hourLayoutManager.orientation = RecyclerView.HORIZONTAL
+                            hourlyAdapter = HourWeatherAdapter(
+                                activity?.applicationContext as Context,
+                                it.data.hourly
+                            )
+                            binding.hourlyWatherRecycler.adapter = hourlyAdapter
+                            binding.hourlyWatherRecycler.layoutManager = hourLayoutManager
 
-                        //Daily
-                        dayLayoutManager = LinearLayoutManager(activity?.applicationContext as Context)
-                        dayLayoutManager.orientation = RecyclerView.VERTICAL
-                        weeklyAdapter = WeekWeatherAdapter(activity?.applicationContext as Context, it.data.daily)
-                        binding.weekWeatherRecycler.adapter = weeklyAdapter
-                        binding.weekWeatherRecycler.layoutManager = dayLayoutManager
+                            //Daily
+                            dayLayoutManager =
+                                LinearLayoutManager(activity?.applicationContext as Context)
+                            dayLayoutManager.orientation = RecyclerView.VERTICAL
+                            weeklyAdapter = WeekWeatherAdapter(
+                                activity?.applicationContext as Context,
+                                it.data.daily
+                            )
+                            binding.weekWeatherRecycler.adapter = weeklyAdapter
+                            binding.weekWeatherRecycler.layoutManager = dayLayoutManager
 
-                        binding.animationviewloading.visibility = View.GONE
+                            binding.animationviewloading.visibility = View.GONE
 
+
+                        }
+                        is ApiState.Loading -> {
+                            binding.animationviewloading.visibility = View.VISIBLE
+                            binding.homeDetailsCard.visibility = View.INVISIBLE
+                        }
+
+                        is ApiState.Failure -> {
+                            Toast.makeText(
+                                activity?.applicationContext as Context,
+                                it.msg.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
                     }
-                    is ApiState.Loading ->{
-                       binding.animationviewloading.visibility = View.VISIBLE
-                       binding.homeDetailsCard.visibility = View.INVISIBLE
-                    }
-
-                    is ApiState.Failure->{
-                        Toast.makeText(activity?.applicationContext as Context,it.msg.message, Toast.LENGTH_SHORT).show()
-                    }
-
                 }
             }
+
+            if (isNetworkAvailable()) {
+                viewModel.getWeatherOverNetwork(requireContext())
+            } else
+                viewModel.getWeatherFromRoom()
+
+
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager?.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
+    fun getCityName(longitude:Double,altitude:Double):String{
+
+        println("--------------------------")
+        println(longitude.toString()+"  "+altitude.toString())
+
+        // val theAddress = geocoder.getFromLocation(altitude as Double, longitude as Double,5)
+        val theAddress = geocoder.getFromLocation(altitude as Double, longitude as Double,5)
+        if(theAddress?.size!! > 0)
+        {
+            return theAddress.get(0)?.adminArea.toString()
+        }else {
+            return ""
         }
-
-
     }
 
 }

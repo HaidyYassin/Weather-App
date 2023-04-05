@@ -74,4 +74,12 @@ class Repository private constructor(
     override suspend fun getAllAlerts(): Flow<List<AlertDetails>> {
         return localSource.getAllAlerts()
     }
+
+    override suspend fun insertWeather(weatherResponse: WeatherResponse) {
+        localSource.insertWeather(weatherResponse)
+    }
+
+    override suspend fun getCurrentWeather(): Flow<WeatherResponse> {
+        return localSource.getCurrentWeather()
+    }
 }

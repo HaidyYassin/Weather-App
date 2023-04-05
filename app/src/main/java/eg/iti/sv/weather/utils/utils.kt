@@ -4,11 +4,19 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.net.ConnectivityManager
 import com.google.gson.Gson
+import eg.iti.sv.weather.MainActivity
 import eg.iti.sv.weather.models.AppSettings
 import eg.iti.sv.weather.models.Constants
 import java.util.*
 
+
+fun isNetworkAvailable(context:Context): Boolean {
+    val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetworkInfo = connectivityManager?.activeNetworkInfo
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected
+}
 
 fun createAppSettings( context: Context, settingsObj: AppSettings = AppSettings()){
     val mPrefs = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE)
@@ -31,6 +39,21 @@ fun getCustomizedSettings(context: Context): AppSettings? {
     val json = mPrefs.getString(Constants.APP_SETTINGS_VALUES, "")
     val settingsObj:AppSettings? = gson.fromJson(json, AppSettings::class.java)
     return settingsObj
+}
+
+fun setAppLocationByMap(context: Context,long:String,lat:String){
+    val preferences: SharedPreferences = context.getSharedPreferences(Constants.PREF_Location_NAME, Context.MODE_PRIVATE)
+    val editor = preferences.edit()
+    editor.putString(Constants.LONGITUDE, long)
+    editor.putString(Constants.LATITUDE, lat)
+    editor.commit()
+}
+
+fun getAppLocationByMap(context: Context): Pair<String?, String?> {
+    val preferences: SharedPreferences =
+        context.getSharedPreferences(Constants.PREF_Location_NAME, Context.MODE_PRIVATE)
+    return Pair(preferences.getString(Constants.LONGITUDE, "not available"),
+    preferences.getString(Constants.LATITUDE, "not available"))
 }
 
 

@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import eg.iti.sv.weather.R
 import eg.iti.sv.weather.databinding.FragmentSettingsBinding
 import eg.iti.sv.weather.models.AppSettings
 import eg.iti.sv.weather.models.Settings
 import eg.iti.sv.weather.utils.createAppSettings
 import eg.iti.sv.weather.utils.getCustomizedSettings
+import eg.iti.sv.weather.utils.isNetworkAvailable
 import org.intellij.lang.annotations.Language
 
 
@@ -76,11 +80,19 @@ class SettingsFragment : Fragment() {
                     println("gps")
                     Settings.settings.location = "GPS"
                     createAppSettings(requireContext(),Settings.settings)
+
                 }
                 getString(R.string.map) -> {
                     println("map")
                     Settings.settings.location ="Map"
                     createAppSettings(requireContext(),Settings.settings)
+                    if(isNetworkAvailable(requireContext())) {
+                        val bundle = bundleOf("fav" to "map")
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_settingsFragment_to_mapFragment,bundle)
+                    }else
+                        Toast.makeText(requireContext(),"Check your connection to open map", Toast.LENGTH_SHORT).show()
+
                 }
             }
         }

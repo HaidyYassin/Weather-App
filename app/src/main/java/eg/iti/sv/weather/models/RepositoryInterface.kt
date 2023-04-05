@@ -19,4 +19,7 @@ interface RepositoryInterface {
     suspend fun insertAlert(alertDetails: AlertDetails)
     suspend fun deleteAlert(alertDetails: AlertDetails)
     suspend fun getAllAlerts(): Flow<List<AlertDetails>>
+
+    suspend fun insertWeather(weatherResponse: WeatherResponse)
+    suspend fun getCurrentWeather(): Flow<WeatherResponse>
 }
