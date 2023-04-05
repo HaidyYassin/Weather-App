@@ -80,13 +80,7 @@ class CurrentLocation(var activity:Activity,var context: Context,var longitude:D
                 println("--------------------------")
                 println(longitude.toString() + "  " + latitude.toString())
 
-
-                GlobalScope.launch {
-                     locationStateFlow.emit(longitude.toString() + "," + latitude.toString()+",")
-                }
-
-
-              /*  val theAddress =
+                val theAddress =
                     geocoder.getFromLocation(latitude as Double, longitude as Double, 5)
                 if (theAddress?.size!! > 0) {
                     println("--------------------------")
@@ -96,7 +90,12 @@ class CurrentLocation(var activity:Activity,var context: Context,var longitude:D
                         )?.adminArea
                     )
                     myaddress = theAddress?.get(0)?.subAdminArea.toString()
-                }*/
+                }
+
+                GlobalScope.launch {
+                     locationStateFlow.emit(longitude.toString() + "," + latitude.toString()+","+myaddress)
+                }
+
             }
         }
 

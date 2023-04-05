@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.*
@@ -32,7 +33,12 @@ import eg.iti.sv.weather.databinding.FragmentAlertsBinding
 import eg.iti.sv.weather.db.ConcreteLocalSource
 import eg.iti.sv.weather.models.AlertDetails
 import eg.iti.sv.weather.models.Repository
+import eg.iti.sv.weather.models.WeatherResponse
 import eg.iti.sv.weather.network.APIClient
+import eg.iti.sv.weather.network.ApiState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.observeOn
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -45,6 +51,12 @@ class AlertsFragment : Fragment(),OnAlertClickListener {
     private lateinit var viewModelFactory: AlertsViewModelFactory
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: AlertsAdapter
+
+    companion object {
+        @JvmStatic
+        lateinit var weather :WeatherResponse
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +77,20 @@ class AlertsFragment : Fragment(),OnAlertClickListener {
             ))
 
         viewModel = ViewModelProvider(this,viewModelFactory).get(AlertsViewModel::class.java)
+        viewModel.getWeatherOverNetwork()
+        lifecycleScope.launch {
+            viewModel.weather.collectLatest {
+                when (it) {
+
+                    is ApiState.Success -> {
+                        weather = it.data
+                    }
+                    else -> {
+                        println("an error occured")
+                    }
+                }
+                }
+                }
 
 
         return binding.root
@@ -97,7 +123,7 @@ class AlertsFragment : Fragment(),OnAlertClickListener {
             MyAlertDialog(viewModel).show(activity?.supportFragmentManager as FragmentManager,"my alert")
         }
         val size = 0
-         val myView: View = view.findViewById(R.id.animation_view_alert)
+        val myView: View = view.findViewById(R.id.animation_view_alert)
         if(size == 0){
             myView.visibility = View.VISIBLE
         }else
@@ -141,7 +167,6 @@ class AlertsFragment : Fragment(),OnAlertClickListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
 class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
-
 
     private lateinit var alertDetails: AlertDetails
      private lateinit var save:Button
@@ -191,7 +216,6 @@ class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
 
              radioGroup.setOnCheckedChangeListener { _, checkedId ->
                  var alertType = customLayout.findViewById<View>(checkedId) as RadioButton
-
                      when (alertType) {
                          notificationRadio -> {
                              println("notification")
@@ -215,6 +239,17 @@ class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
                         ).show()
                     else {
 
+                        val sdf = SimpleDateFormat("dd-M-yy HH:mm", Locale.ENGLISH);
+                        var startcalendar =Calendar.getInstance()
+                        val date = sdf.parse(calendarTxt.text.toString()+" "+startTxt.text.toString())
+                        startcalendar.setTime(date!!)
+                        myStartTime = startcalendar.timeInMillis
+
+
+                        var endcalendar =Calendar.getInstance()
+                        endcalendar.setTime(sdf.parse(calendarTxt.text.toString()+" "+endTxt.text.toString())!!)
+                        myEndTime = endcalendar.timeInMillis
+
                         duration = (myEndTime/1000L) - (myStartTime/1000L)
                         val inputData = Data.Builder()
                             .putString("title", "Weather")
@@ -226,7 +261,7 @@ class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
                             .setRequiredNetworkType(NetworkType.CONNECTED)
                             .build()
                         val oneTimeWorkRequest = OneTimeWorkRequestBuilder<AlertWorker>()
-                            .setInitialDelay(duration, TimeUnit.SECONDS)
+                            .setInitialDelay(duration, TimeUnit.MILLISECONDS)
                             .setInputData(inputData)
                             .setConstraints(fireAlertConstraints)
                             .build()
@@ -259,7 +294,7 @@ class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
             android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK,
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 calender.set(year, month, dayOfMonth)
-                calendarTxt.text = SimpleDateFormat("dd MMMM").format(calender.time).toString()
+                calendarTxt.text = SimpleDateFormat("dd-M-yy").format(calender.time).toString()
 
             },
             currentDate.get(Calendar.YEAR),
@@ -278,6 +313,7 @@ class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
         val minute = calender.get(Calendar.MINUTE);
 
          myStartTime = calender.timeInMillis
+        println(myStartTime)
 
         val timePickerDialog =  TimePickerDialog(requireContext(),
             object :  TimePickerDialog.OnTimeSetListener{
@@ -290,10 +326,12 @@ class MyAlertDialog(val myViewModel: AlertsViewModel) : DialogFragment() {
     }
 
     private fun pickEndTime(){
-        val calender: Calendar= Calendar.getInstance();
-        val hour = calender.get(Calendar.HOUR_OF_DAY);
-        val minute = calender.get(Calendar.MINUTE);
+        val calender: Calendar= Calendar.getInstance()
+        val hour = calender.get(Calendar.HOUR_OF_DAY)
+        val minute = calender.get(Calendar.MINUTE)
+
         myEndTime = calender.timeInMillis
+        println(myEndTime)
 
         val timePickerDialog =  TimePickerDialog(requireContext(),
             object :  TimePickerDialog.OnTimeSetListener{

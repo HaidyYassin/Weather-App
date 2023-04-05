@@ -5,6 +5,10 @@ object Constants {
     const val WEATHER_IMAGE_BASE_URL = "https://openweathermap.org/img/wn/"
     const val APP_SETTINGS_VALUES = "settings"
     const val PREF_NAME = "App Settings"
+    const val PREF_Location_NAME ="Location"
+    const val LONGITUDE ="long"
+    const val LATITUDE = "lat"
+
 
 
 }

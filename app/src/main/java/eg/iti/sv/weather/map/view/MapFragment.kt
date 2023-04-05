@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -30,10 +32,14 @@ import eg.iti.sv.weather.map.viewmodel.MapViewModelFactory
 import eg.iti.sv.weather.models.FavPlace
 import eg.iti.sv.weather.models.Repository
 import eg.iti.sv.weather.network.APIClient
+import eg.iti.sv.weather.utils.setAppLocationByMap
 import java.io.IOException
 
 
 lateinit var viewModel: MapViewModel
+private lateinit var myView: View
+lateinit var type:String
+
 class MapFragment : Fragment() {
 
     private lateinit var binding: FragmentMapBinding
@@ -42,6 +48,7 @@ class MapFragment : Fragment() {
     var place =""
     private lateinit var favPlace: FavPlace
     private lateinit var mMap:GoogleMap
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +67,9 @@ class MapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+       myView = view
+         type = arguments?.get("fav") as String  //arguments?.getSerializable("weather",ApiState::class.java)
+        //arguments?.getSerializable("weather",ApiState::class.java)
 
         viewModelFactory = MapViewModelFactory(
             Repository.getInstance(
@@ -165,20 +175,24 @@ class MapFragment : Fragment() {
 
     class Dialog(private val place:FavPlace): DialogFragment() {
 
+
         override fun onCreateDialog(savedInstanceState: Bundle?): android.app.Dialog {
             return activity?.let {
 
                 val builder = AlertDialog.Builder(it)
-                builder.setMessage("Save ${place.paceName} to Fav List?")
+                builder.setMessage("Save ${place.paceName} ?")
                     .setPositiveButton("Save",
                         DialogInterface.OnClickListener { dialog, id ->
-                            Toast.makeText(requireContext(),"yes pressed",Toast.LENGTH_SHORT).show()
-                            viewModel.addPlaceToFav(place)
+                            Toast.makeText(requireContext(),"Saved Successfully",Toast.LENGTH_SHORT).show()
+                            if(type  == "fav")
+                                viewModel.addPlaceToFav(place)
+                            else
+                                setAppLocationByMap(requireContext(),place.longitude.toString(),place.latitude.toString())
 
                         })
                     .setNegativeButton("Cancel",
                         DialogInterface.OnClickListener { dialog, id ->
-                            Toast.makeText(requireContext(),"cancel pressed",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"cancel",Toast.LENGTH_SHORT).show()
 
                         })
 
